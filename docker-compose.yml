@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  postgres_votacao_pauta_service:
+    container_name: postgres_votacao_pauta_service
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    hostname:   postgres_votacao_pauta_service
+    environment:
+      - POSTGRES_PASSWORD=votacaopauta
+      - POSTGRES_USER=votacaopauta
+      - POSTGRES_DB=votacaopautadb
