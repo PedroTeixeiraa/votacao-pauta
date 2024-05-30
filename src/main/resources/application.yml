@@ -1,0 +1,8 @@
+spring:
+  r2dbc:
+    username: votacaopauta
+    password: votacaopauta
+    url: r2dbc:postgresql://localhost:5432/votacaopautadb
+  flyway:
+    url: jdbc:postgresql://localhost:5432/votacaopautadb
+    locations: classpath:db.migration
