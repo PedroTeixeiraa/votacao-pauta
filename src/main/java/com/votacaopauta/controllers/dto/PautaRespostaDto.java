@@ -1,7 +1,6 @@
 package com.votacaopauta.controllers.dto;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,5 +9,5 @@ import lombok.Getter;
 @Getter
 public class PautaRespostaDto implements Serializable {
 
-	private UUID id;
+	private Long id;
 }

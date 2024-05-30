@@ -1,7 +1,5 @@
 package com.votacaopauta.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +23,9 @@ public class SessaoVotacaoController {
 
 	@PostMapping("iniciar")
 	public Mono<SessaoVotacaoRespostaDto> iniciarSessaoVotacao(@Valid @RequestBody SessaoVotacaoRequisicaoDto sessaoVotacaoRequisicaoDto) {
-		String idPauta = sessaoVotacaoRequisicaoDto.getIdPauta();
+		Long idPauta = sessaoVotacaoRequisicaoDto.getIdPauta();
 		Integer tempoSessao = sessaoVotacaoRequisicaoDto.getTempoDuracao();
 
-		sessaoVotacaoService.iniciar(idPauta, tempoSessao);
-
-		return null;
+		return sessaoVotacaoService.iniciar(idPauta, tempoSessao);
 	}
 }

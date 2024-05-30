@@ -2,7 +2,6 @@ package com.votacaopauta.domain;
 
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -18,7 +17,7 @@ import lombok.Setter;
 public class Pauta {
 
 	@Id
-	private UUID id;
+	private Long id;
 	private String titulo;
 	private LocalDateTime dataCriacao;
 }

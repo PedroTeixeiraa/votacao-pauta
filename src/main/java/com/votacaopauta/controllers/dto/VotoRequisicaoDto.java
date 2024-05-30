@@ -1,7 +1,5 @@
 package com.votacaopauta.controllers.dto;
 
-import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.votacaopauta.desserializers.VotoDeserializer;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -19,8 +18,9 @@ public class VotoRequisicaoDto {
 	private Boolean opcao;
 
 	@NotEmpty(message = "Cpf não pode ser nulo")
+	@Size(max = 11, message = "O CPF deve ter no máximo {max} caracteres")
 	private String cpf;
 
-	@NotNull(message = "idPauta não pode ser nulo")
-	private UUID idPauta;
+	@NotNull(message = "idSessaoVotacao não pode ser nulo")
+	private Long idSessaoVotacao;
 }
