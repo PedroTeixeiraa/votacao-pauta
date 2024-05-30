@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.votacaopauta.v1.controllers.dto.PautaRequisicaoDto;
 import com.votacaopauta.v1.controllers.dto.PautaRespostaDto;
 import com.votacaopauta.v1.services.SalvarPautaService;
 import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("v1/pauta")
@@ -31,6 +34,7 @@ public class PautaController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Salvar pauta", description = "Retorna o id da pauta criada.")
 	public Mono<PautaRespostaDto> salvar(@Valid @RequestBody PautaRequisicaoDto pautaRequisicaoDto) {
+		log.info("Requisição recebida para criar pauta: {}", pautaRequisicaoDto);
 		return salvarPautaService.salvar(pautaRequisicaoDto.getTitulo());
 	}
 }

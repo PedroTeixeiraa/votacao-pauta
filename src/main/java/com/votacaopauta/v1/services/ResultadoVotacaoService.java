@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.votacaopauta.v1.controllers.dto.ResultadoVotacaoRespostaDto;
 import com.votacaopauta.v1.domain.SessaoVotacao;
 import com.votacaopauta.v1.domain.Voto;
 import com.votacaopauta.v1.repositories.SessaoVotacaoRepository;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Service
 public class ResultadoVotacaoService {
 
@@ -53,6 +56,8 @@ public class ResultadoVotacaoService {
 		resultado.setTotalSim(totalSim);
 		resultado.setTotalNao(totalNao);
 		resultado.setTotalVotos(totalVotos);
+
+		log.info("Resultado da pauta gerado com sucesso: {}", resultado);
 
 		return resultado;
 	}

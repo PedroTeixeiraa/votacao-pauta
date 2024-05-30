@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,18 +18,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.votacaopauta.comum.exceptions.BusinessException;
-import com.votacaopauta.v1.controllers.dto.SessaoVotacaoRequisicaoDto;
 import com.votacaopauta.v1.controllers.dto.VotoRequisicaoDto;
-import com.votacaopauta.v1.domain.Pauta;
 import com.votacaopauta.v1.domain.SessaoVotacao;
 import com.votacaopauta.v1.domain.Voto;
-import com.votacaopauta.v1.repositories.SessaoVotacaoRepository;
 import com.votacaopauta.v1.repositories.VotoRepository;
-import com.votacaopauta.v1.services.BuscarPautaService;
 import com.votacaopauta.v1.services.BuscarSessaoVotacaoService;
-import com.votacaopauta.v1.services.ResultadoVotacaoService;
-import com.votacaopauta.v1.services.SessaoVotacaoService;
-import com.votacaopauta.v1.services.ValidarSessaoVotacaoService;
 import com.votacaopauta.v1.services.VerificarUsuarioHabilitadoVotacaoService;
 import com.votacaopauta.v1.services.VotacaoService;
 import reactor.core.publisher.Mono;
@@ -56,7 +48,11 @@ class VotacaoControllerTest {
 	void deveRealizarVotacao() {
 		Long idSessaoVotacao = 1L;
 		String cpf = "123213";
-		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto(true, cpf, idSessaoVotacao);
+
+		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto();
+		requisicaoDto.setIdSessaoVotacao(idSessaoVotacao);
+		requisicaoDto.setOpcao("Não");
+		requisicaoDto.setCpf(cpf);
 
 		SessaoVotacao sessaoVotacao = SessaoVotacao.builder().fim(LocalDateTime.now().plusMinutes(1L)).build();
 
@@ -84,7 +80,11 @@ class VotacaoControllerTest {
 	void deveRetornarMensagemErroQuandoNaoEncontrarSessaoVotacao() {
 		Long idSessaoVotacao = 1L;
 		String cpf = "123213";
-		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto(true, cpf, idSessaoVotacao);
+
+		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto();
+		requisicaoDto.setIdSessaoVotacao(idSessaoVotacao);
+		requisicaoDto.setOpcao("Não");
+		requisicaoDto.setCpf(cpf);
 
 		when(buscarSessaoVotacaoService.buscar(idSessaoVotacao)).thenReturn(
 				Mono.error(new BusinessException("A sessão de votação não foi encontrada.")));
@@ -105,7 +105,11 @@ class VotacaoControllerTest {
 	void deveRetornarMensagemErroQuandoSessaoVotacaoNaoEstiverAtiva() {
 		Long idSessaoVotacao = 1L;
 		String cpf = "123213";
-		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto(true, cpf, idSessaoVotacao);
+
+		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto();
+		requisicaoDto.setIdSessaoVotacao(idSessaoVotacao);
+		requisicaoDto.setOpcao("Não");
+		requisicaoDto.setCpf(cpf);
 
 		SessaoVotacao sessaoVotacao = SessaoVotacao.builder().fim(LocalDateTime.now().minusMinutes(1L)).build();
 
@@ -127,7 +131,11 @@ class VotacaoControllerTest {
 	void deveRetornarMensagemErroQuandoUsuarioNaoEstiverHabilitadoParaVotar() {
 		Long idSessaoVotacao = 1L;
 		String cpf = "123213";
-		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto(true, cpf, idSessaoVotacao);
+
+		VotoRequisicaoDto requisicaoDto = new VotoRequisicaoDto();
+		requisicaoDto.setIdSessaoVotacao(idSessaoVotacao);
+		requisicaoDto.setOpcao("Não");
+		requisicaoDto.setCpf(cpf);
 
 		SessaoVotacao sessaoVotacao = SessaoVotacao.builder().fim(LocalDateTime.now().plusMinutes(1L)).build();
 

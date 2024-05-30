@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.votacaopauta.v1.controllers.dto.SessaoVotacaoRequisicaoDto;
 import com.votacaopauta.v1.controllers.dto.SessaoVotacaoRespostaDto;
 import com.votacaopauta.v1.services.SessaoVotacaoService;
 import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("v1/sessao-votacao")
@@ -30,6 +33,8 @@ public class SessaoVotacaoController {
 	public Mono<SessaoVotacaoRespostaDto> iniciarSessaoVotacao(@Valid @RequestBody SessaoVotacaoRequisicaoDto sessaoVotacaoRequisicaoDto) {
 		Long idPauta = sessaoVotacaoRequisicaoDto.getIdPauta();
 		Integer tempoSessao = sessaoVotacaoRequisicaoDto.getTempoDuracao();
+
+		log.info("Iniciando votação sessão para a pauta com ID: {}, duração da sessão: {}", idPauta, tempoSessao);
 
 		return sessaoVotacaoService.iniciar(idPauta, tempoSessao);
 	}

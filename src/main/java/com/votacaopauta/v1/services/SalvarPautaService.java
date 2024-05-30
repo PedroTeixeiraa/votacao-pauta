@@ -5,11 +5,14 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.votacaopauta.v1.controllers.dto.PautaRespostaDto;
 import com.votacaopauta.v1.domain.Pauta;
 import com.votacaopauta.v1.repositories.PautaRepository;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Service
 public class SalvarPautaService {
 
@@ -31,6 +34,7 @@ public class SalvarPautaService {
 	}
 
 	private PautaRespostaDto mapearParaRespostaDto(Pauta pauta) {
+		log.info("Pauta criada: {}", pauta);
 		return new PautaRespostaDto(pauta.getId());
 	}
 
