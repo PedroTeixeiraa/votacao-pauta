@@ -11,7 +11,7 @@ import com.votacaopauta.repositories.PautaRepository;
 import reactor.core.publisher.Mono;
 
 @Service
-public class PautaService {
+public class SalvarPautaService {
 
 	@Autowired
 	private PautaRepository pautaRepository;

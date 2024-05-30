@@ -9,7 +9,6 @@ import com.votacaopauta.controllers.dto.VotoRequisicaoDto;
 import com.votacaopauta.controllers.dto.VotoRespostaDto;
 import com.votacaopauta.domain.Voto;
 import com.votacaopauta.exceptions.BusinessException;
-import com.votacaopauta.repositories.SessaoVotacaoRepository;
 import com.votacaopauta.repositories.VotoRepository;
 import reactor.core.publisher.Mono;
 
@@ -20,48 +19,30 @@ public class VotacaoService {
 	private VotoRepository votoRepository;
 
 	@Autowired
-	private SessaoVotacaoService sessaoVotacaoService;
+	private BuscarSessaoVotacaoService buscarSessaoVotacaoService;
 
 	@Autowired
-	private SessaoVotacaoRepository sessaoVotacaoRepository;
+	private VerificarUsuarioHabilitadoVotacaoService verificarUsuarioHabilitadoVotacaoService;
 
 	public Mono<VotoRespostaDto> votar(VotoRequisicaoDto votoRequisicaoDto) {
 		Long idSessaoVotacao = votoRequisicaoDto.getIdSessaoVotacao();
 		String cpf = votoRequisicaoDto.getCpf();
+		boolean opcao = votoRequisicaoDto.getOpcao();
 
-		return sessaoVotacaoRepository.findById(idSessaoVotacao)
-				.switchIfEmpty(Mono.error(new BusinessException("A sessão de votação não foi encontrada.")))
-				.flatMap(sessaoVotacao -> {
-					LocalDateTime dataAtual = LocalDateTime.now();
-					if (sessaoVotacao.getFim().isBefore(dataAtual)) {
-						return Mono.error(new BusinessException("A sessão de votação não está mais ativa."));
-					} else {
-						return verificarUsuarioHabilitadoParaVotar(cpf).flatMap(usuarioHabilitado -> {
-							if (Boolean.TRUE.equals(usuarioHabilitado)) {
-								Voto voto = Voto.builder()
-										.cpf(cpf)
-										.sessaoVotacaoId(idSessaoVotacao)
-										.opcao(votoRequisicaoDto.getOpcao())
-										.dataVoto(LocalDateTime.now())
-										.build();
-
-								return votoRepository.save(voto)
-										.thenReturn(VotoRespostaDto.builder().mensagem("Seu voto foi registrado com sucesso.").build());
-							} else {
-								return Mono.error(new BusinessException(
-										"Desculpe, você já participou de uma votação ativa. Por favor, aguarde o término dessa sessão para votar novamente."));
-							}
-						});
-					}
+		return buscarSessaoVotacaoService.buscar(idSessaoVotacao).flatMap(sessaoVotacao -> {
+			LocalDateTime dataAtual = LocalDateTime.now();
+			if (sessaoVotacao.getFim().isBefore(dataAtual)) {
+				return Mono.error(new BusinessException("A sessão de votação não está mais ativa."));
+			} else {
+				return verificarUsuarioHabilitadoVotacaoService.verificar(cpf).flatMap(usuarioHabilitado -> {
+					Voto voto = criarVoto(cpf, idSessaoVotacao, opcao);
+					return votoRepository.save(voto).thenReturn(VotoRespostaDto.builder().mensagem("Seu voto foi registrado com sucesso.").build());
 				});
+			}
+		});
 	}
 
-	public Mono<Boolean> verificarUsuarioHabilitadoParaVotar(String cpf) {
-		LocalDateTime dataAtual = LocalDateTime.now();
-
-		return sessaoVotacaoRepository.findAll()
-				.filter(sessao -> sessao.getFim().isAfter(dataAtual))
-				.flatMap(sessao -> votoRepository.existsBySessaoVotacaoIdAndCpf(sessao.getId(), cpf))
-				.any(hasVoted -> !hasVoted);
+	private Voto criarVoto(String cpf, Long idSessaoVotacao, boolean opcao) {
+		return Voto.builder().cpf(cpf).sessaoVotacaoId(idSessaoVotacao).opcao(opcao).dataVoto(LocalDateTime.now()).build();
 	}
 }

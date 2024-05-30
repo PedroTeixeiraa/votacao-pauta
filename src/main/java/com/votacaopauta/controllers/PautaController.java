@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.votacaopauta.controllers.dto.PautaRequisicaoDto;
 import com.votacaopauta.controllers.dto.PautaRespostaDto;
-import com.votacaopauta.services.PautaService;
+import com.votacaopauta.services.SalvarPautaService;
 import jakarta.validation.Valid;
 import reactor.core.publisher.Mono;
 
@@ -21,11 +21,11 @@ import reactor.core.publisher.Mono;
 public class PautaController {
 
 	@Autowired
-	private PautaService pautaService;
+	private SalvarPautaService salvarPautaService;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Mono<PautaRespostaDto> salvar(@Valid @RequestBody PautaRequisicaoDto pautaRequisicaoDto) {
-		return pautaService.salvar(pautaRequisicaoDto.getTitulo());
+		return salvarPautaService.salvar(pautaRequisicaoDto.getTitulo());
 	}
 }
