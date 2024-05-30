@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.votacaopauta.v1.controllers.dto.PautaRequisicaoDto;
 import com.votacaopauta.v1.controllers.dto.PautaRespostaDto;
 import com.votacaopauta.v1.services.SalvarPautaService;
@@ -18,6 +21,7 @@ import reactor.core.publisher.Mono;
 @Validated
 @RestController
 @RequestMapping("v1/pauta")
+@Tag(name = "Pauta", description = "Endpoints relacionados a Pauta")
 public class PautaController {
 
 	@Autowired
@@ -25,6 +29,7 @@ public class PautaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@Operation(summary = "Salvar pauta", description = "Retorna o id da pauta criada.")
 	public Mono<PautaRespostaDto> salvar(@Valid @RequestBody PautaRequisicaoDto pautaRequisicaoDto) {
 		return salvarPautaService.salvar(pautaRequisicaoDto.getTitulo());
 	}
