@@ -14,7 +14,7 @@ class DatabaseConfig {
 	@Bean(initMethod = "migrate")
 	public Flyway flyway(FlywayProperties flywayProperties, R2dbcProperties r2dbcProperties) {
 		return Flyway.configure()
-				.dataSource("jdbc:postgresql://localhost:5432/votacaopautadb", "votacaopauta", "votacaopauta")
+				.dataSource(flywayProperties.getUrl(), r2dbcProperties.getUsername(), r2dbcProperties.getPassword())
 				.locations(flywayProperties.getLocations().stream().toArray(String[]::new))
 				.baselineOnMigrate(true)
 				.load();

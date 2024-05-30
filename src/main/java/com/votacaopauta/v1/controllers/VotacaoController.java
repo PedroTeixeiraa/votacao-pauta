@@ -1,6 +1,5 @@
 package com.votacaopauta.v1.controllers;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,7 @@ public class VotacaoController {
 	private VotacaoService votacaoService;
 
 	@PostMapping
-	@Operation(summary = "Votar pauta", description = "Retorna uma mensagem de sucesso quando voto realizado.")
+	@Operation(summary = "Votar sessão relaciona a uma pauta", description = "Retorna uma mensagem de sucesso quando voto realizado.")
 	public Mono<VotoRespostaDto> votar(@Valid @RequestBody VotoRequisicaoDto votoRequisicaoDto) {
 		log.info("Recebido voto para a sessão com ID: {}, voto: {}", votoRequisicaoDto.getIdSessaoVotacao(), votoRequisicaoDto.getOpcao());
 
