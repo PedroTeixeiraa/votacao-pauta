@@ -17,9 +17,21 @@ public class PautaService {
 	private PautaRepository pautaRepository;
 
 	public Mono<PautaRespostaDto> salvar(String titulo) {
-		Pauta pauta = Pauta.builder().titulo(titulo).dataCriacao(LocalDateTime.now()).build();
+		Pauta pauta = criarPauta(titulo);
 
-		return pautaRepository.save(pauta).map(Pauta::getId).map(id -> PautaRespostaDto.builder().id(id).build());
+		return salvarPauta(pauta);
+	}
+
+	private Pauta criarPauta(String titulo) {
+		return Pauta.builder().titulo(titulo).dataCriacao(LocalDateTime.now()).build();
+	}
+
+	private Mono<PautaRespostaDto> salvarPauta(Pauta pauta) {
+		return pautaRepository.save(pauta).map(this::mapearParaRespostaDto);
+	}
+
+	private PautaRespostaDto mapearParaRespostaDto(Pauta pauta) {
+		return PautaRespostaDto.builder().id(pauta.getId()).build();
 	}
 
 }
