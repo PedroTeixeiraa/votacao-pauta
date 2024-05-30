@@ -32,9 +32,9 @@ public class SessaoVotacaoService {
 			SessaoVotacao sessaoVotacao = criarSessaoVotacao(idPauta, duracao);
 
 			return validarSessaoVotacaoService.validarSessaoAtiva(idPauta)
-					.then(sessaoVotacaoRepository.save(sessaoVotacao))
+					.then(Mono.defer(() -> sessaoVotacaoRepository.save(sessaoVotacao)))
 					.map(SessaoVotacao::getId)
-					.map(id -> SessaoVotacaoRespostaDto.builder().id(sessaoVotacao.getId()).build());
+					.map(SessaoVotacaoRespostaDto::new);
 		});
 	}
 

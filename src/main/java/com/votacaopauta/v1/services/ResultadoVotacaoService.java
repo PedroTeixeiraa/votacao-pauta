@@ -18,15 +18,12 @@ public class ResultadoVotacaoService {
 	private SessaoVotacaoRepository sessaoVotacaoRepository;
 
 	@Autowired
-	private SessaoVotacaoService sessaoVotacaoService;
-
-	@Autowired
 	private BuscarVotoService buscarVotoService;
 
 	@Autowired
 	private ValidarSessaoVotacaoService validarSessaoVotacaoService;
 
-	public Mono<ResultadoVotacaoRespostaDto> buscar(Long pautaId) {
+	public Mono<ResultadoVotacaoRespostaDto> gerar(Long pautaId) {
 		return validarSessaoVotacaoService.validarSessaoAtiva(pautaId)
 				.flatMap(sessaoAtiva -> sessaoVotacaoRepository.findAllByPautaId(pautaId)
 						.collectList()

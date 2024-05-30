@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(WebExchangeBindException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(WebExchangeBindException ex) {
 		Map<String, String> errors = new HashMap<>();
-		ex.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+		ex.getFieldErrors().forEach(error -> errors.put("mensagem", error.getDefaultMessage()));
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
 

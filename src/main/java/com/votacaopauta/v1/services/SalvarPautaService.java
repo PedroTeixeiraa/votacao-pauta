@@ -31,7 +31,7 @@ public class SalvarPautaService {
 	}
 
 	private PautaRespostaDto mapearParaRespostaDto(Pauta pauta) {
-		return PautaRespostaDto.builder().id(pauta.getId()).build();
+		return new PautaRespostaDto(pauta.getId());
 	}
 
 }
