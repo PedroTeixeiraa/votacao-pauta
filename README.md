@@ -18,7 +18,7 @@ O sistema oferece as seguintes funcionalidades:
 Para executar a aplicação, siga os seguintes passos:
 
 1. Clone o repositório do projeto.
-2. Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
+2. Certifique-se de ter o Docker, Docker Compose e o JDK 17 instalados em sua máquina.
 3. No terminal, navegue até o diretório do projeto onde se encontra o arquivo `docker-compose.yml`.
 4. Execute o comando `docker-compose up` para iniciar a aplicação.
 5. Aguarde até que todos os serviços estejam em execução.
